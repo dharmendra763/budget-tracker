@@ -29,7 +29,7 @@ function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="block border-separate bg-background md:hidden">
-      <nav className="container flex items-center justify-between px-4 md:px-8">
+      <nav className="container flex-center-between px-4 md:px-8">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant={"ghost"} size={"icon"}>
@@ -55,11 +55,11 @@ function MobileNavbar() {
           </SheetContent>
         </Sheet>
 
-        <div className="flex h-[80px] min-h-[60px] items-center gap-x-4">
+        <div className="flex-center h-[80px] min-h-[60px] gap-x-4">
           <MobileLogo />
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex-center gap-2">
           <ThemeSwitcherBtn />
           <UserButton afterSignOutUrl="sign-in" />
         </div>
@@ -71,8 +71,8 @@ function MobileNavbar() {
 function DesktopNavbar() {
   return (
     <div className="hidden border-separate border-b bg-background md:block">
-      <nav className="container flex items-center justify-between px-8">
-        <div className="flex h-[80px] min-h-[60px] items-center gap-x-4">
+      <nav className="container flex-center-between px-8">
+        <div className="flex-center h-[80px] min-h-[60px] gap-x-4">
           <Logo />
           <div className="flex h-full">
             {items.map((item) => (
@@ -80,7 +80,7 @@ function DesktopNavbar() {
             ))}
           </div>
         </div>
-        <div className="flex-items-center gap-2">
+        <div className="flex-center gap-2">
           <ThemeSwitcherBtn />
           <UserButton afterSignOutUrl="/sign-in" />
         </div>
@@ -101,7 +101,7 @@ function NavbarItem({
   const pathname = usePathname();
   const isActive = pathname === link;
   return (
-    <div className="relative flex items-center">
+    <div className="relative flex-center">
       <Link
         href={link}
         className={cn(
