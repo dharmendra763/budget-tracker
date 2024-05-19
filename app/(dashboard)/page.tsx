@@ -1,8 +1,8 @@
+import CreateTransactionDialog from "@/app/(dashboard)/_components/CreateTransactionDialog";
+import { Button } from "@/components/ui/button";
+import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
-import { Button } from "@/components/ui/button";
-import CreateTransactionDialog from "@/app/(dashboard)/_components/CreateTransactionDialog";
 
 async function page() {
   const user = await currentUser();

@@ -29,13 +29,11 @@ import { useCallback } from "react";
 export function CurrencyComboBox() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [selectedOption, setSelectedOption] = React.useState<Curreny | null>(
-    null
-  );
+  const [selectedOption, setSelectedOption] = React.useState<Curreny | null>(null);
 
-  const userSettings = useQuery<UserSettings>({
+  const userSettings = useQuery({
     queryKey: ["user-settings"],
-    queryFn: () => fetch("/api/user-settings").then((res) => res.json()),
+    queryFn: () => fetch("/api/user-settings").then((res) => res.json() as Promise<UserSettings>)
   });
 
   const mutation = useMutation({
@@ -45,7 +43,6 @@ export function CurrencyComboBox() {
       toast.success("Currency updated successfully", {
         id: "update-currency",
       });
-
       setSelectedOption(
         Currencies.find((currency) => currency.value === data.currency) || null
       );
@@ -66,19 +63,18 @@ export function CurrencyComboBox() {
     if (userCurrency) setSelectedOption(userCurrency);
   }, [userSettings.data]);
 
-  const selectOption = useCallback(
-    (currency: Curreny | null) => {
-      if (!currency) {
-        toast.error("Please select a currency");
-        return;
-      }
+  const selectOption = useCallback((currency: Curreny | null) => {
+    if (!currency) {
+      toast.error("Please select a currency");
+      return;
+    }
 
-      toast.loading("Updating currency...", {
-        id: "update-currency",
-      });
+    toast.loading("Updating currency...", {
+      id: "update-currency",
+    });
 
-      mutation.mutate(currency.value);
-    },
+    mutation.mutate(currency.value);
+  },
     [mutation]
   );
 
@@ -144,8 +140,8 @@ function OptionList({
               value={currency.value}
               onSelect={(value) => {
                 setSelectedOption(
-                  Currencies.find((priority) => priority.value === value) ||
-                    null
+                  Currencies.find((currency) => currency.value === value) ||
+                  null
                 );
                 setOpen(false);
               }}
