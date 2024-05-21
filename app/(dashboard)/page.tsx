@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import Overview from "./_components/Overview";
+import History from "./_components/History";
 
 async function page() {
   const user = await currentUser();
@@ -53,6 +55,10 @@ async function page() {
           </div>
         </div>
       </div>
+
+      <Overview userSettings={userSettings} />
+
+      <History userSettings={userSettings} />
     </div>
   );
 }

@@ -15,18 +15,25 @@ import {
 import { TransactionType } from "@/lib/types";
 import { Category } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CreateCategoryDialog from "./CreateCategoryDialog";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Props {
   type: TransactionType;
+  onChange: (value: string) => void;
 }
 
-function CategoryPicker({ type }: Props) {
+function CategoryPicker({ type, onChange }: Props) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+
+  useEffect(() => {
+    if (value) {
+      onChange(value);
+    }
+  }, [value, onChange]);
 
   const categoriesQuery = useQuery<Category[]>({
     queryKey: ["categories", type],
@@ -38,10 +45,10 @@ function CategoryPicker({ type }: Props) {
     (category: Category) => category.name === value
   );
 
-  const successCallback = useCallback((category: Category)=>{
+  const successCallback = useCallback((category: Category) => {
     setValue(category.name);
-    setOpen((prev)=> !prev);
-  }, [])
+    setOpen((prev) => !prev);
+  }, []);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -82,8 +89,8 @@ function CategoryPicker({ type }: Props) {
                   <CommandItem
                     key={category.name}
                     onSelect={() => {
-                      setValue(category.name)
-                      setOpen((prev) => !prev)
+                      setValue(category.name);
+                      setOpen((prev) => !prev);
                     }}
                   >
                     <CategoryRow category={category} />
