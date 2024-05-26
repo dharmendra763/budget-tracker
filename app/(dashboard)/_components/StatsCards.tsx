@@ -1,4 +1,4 @@
-import { getBalanceStateResponseType } from "@/app/api/stats/balance/route";
+import { GetBalanceStateResponseType } from "@/app/api/stats/balance/route";
 import SkeletonWrapper from "@/components/SkeletonWrapper";
 import { Card } from "@/components/ui/card";
 import { DateToUTCDate, GetFormatterForCurrency } from "@/lib/helpers";
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function StatsCards({ from, to, userSettings }: Props) {
-  const statsQuery = useQuery<getBalanceStateResponseType>({
+  const statsQuery = useQuery<GetBalanceStateResponseType>({
     queryKey: ["overview", "stats", from, to],
     queryFn: () =>
       fetch(
