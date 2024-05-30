@@ -46,7 +46,10 @@ export default function HistoryPeriodSelector({
       </SkeletonWrapper>
 
       <div className="flex-center flex-wrap gap-2">
-        <SkeletonWrapper isLoading={historyPeriods.isFetching}>
+        <SkeletonWrapper
+          fullWidth={false}
+          isLoading={historyPeriods.isFetching}
+        >
           <YearsSelector
             period={period}
             setPeriod={setPeriod}
@@ -55,7 +58,10 @@ export default function HistoryPeriodSelector({
         </SkeletonWrapper>
 
         {timeFrame === "month" && (
-          <SkeletonWrapper isLoading={historyPeriods.isFetching}>
+          <SkeletonWrapper
+            fullWidth={false}
+            isLoading={historyPeriods.isFetching}
+          >
             <MonthsSelector period={period} setPeriod={setPeriod} />
           </SkeletonWrapper>
         )}

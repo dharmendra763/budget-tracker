@@ -18,7 +18,14 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  TooltipProps,
 } from "recharts";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
+import { cn } from "@/lib/utils";
+import CountUp from "react-countup";
 
 export default function History({
   userSettings,
@@ -45,8 +52,6 @@ export default function History({
   });
 
   const dataAvailable = histoyDataQuery.data && histoyDataQuery.data.length > 0;
-
-  console.log(histoyDataQuery.data);
 
   return (
     <div className="container">
@@ -123,7 +128,6 @@ export default function History({
                     padding={{ left: 5, right: 5 }}
                     dataKey={(data) => {
                       const { year, month, day } = data;
-                      console.log(data);
 
                       const date = new Date(year, month, day || 1);
                       if (timeFrame === "year") {
@@ -144,6 +148,31 @@ export default function History({
                     tickLine={false}
                     axisLine={false}
                   />
+
+                  <Bar
+                    dataKey={"income"}
+                    label="Income"
+                    fill="url(#incomeBar)"
+                    radius={4}
+                    className="cursor-pointer"
+                  />
+
+                  <Bar
+                    dataKey={"expense"}
+                    label="Expense"
+                    fill="url(#expenseBar)"
+                    radius={4}
+                    className="cursor-pointer"
+                  />
+                  <Tooltip
+                    cursor={{ opacity: 0.1 }}
+                    content={(props) => (
+                      <CustomTooltip
+                        formatter={formatter}
+                        toolTipProps={props}
+                      />
+                    )}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -159,6 +188,79 @@ export default function History({
           </SkeletonWrapper>
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function CustomTooltip({
+  toolTipProps: { active, payload },
+  formatter,
+}: {
+  formatter: Intl.NumberFormat;
+  toolTipProps: TooltipProps<ValueType, NameType>;
+}) {
+  if (!active || !payload || payload.length === 0) return null;
+
+  const data = payload[0].payload;
+  const { expense, income } = data;
+  return (
+    <div className="min-w-[300px] max-w-full rounded bg-background p-4">
+      <TooltipRow
+        formatter={formatter}
+        label="Expense"
+        value={expense}
+        bgColor="bg-red-500"
+        textColor="text-red-500"
+      />
+
+      <TooltipRow
+        formatter={formatter}
+        label="Income"
+        value={income}
+        bgColor="bg-emerald-500"
+        textColor="text-emerald-500"
+      />
+
+      <TooltipRow
+        formatter={formatter}
+        label="Balance"
+        value={income - expense}
+        bgColor="bg-gray-500"
+        textColor="text-foreground"
+      />
+    </div>
+  );
+}
+
+function TooltipRow({
+  bgColor,
+  formatter,
+  label,
+  textColor,
+  value,
+}: {
+  label: string;
+  value: number;
+  formatter: Intl.NumberFormat;
+  bgColor: string;
+  textColor: string;
+}) {
+  return (
+    <div className="flex-center gap-2">
+      <div className={cn("h-4 w-4 rounded-full", bgColor)} />
+      <div className="flex w-full justify-between">
+        <p className="text-sm text-muted-foreground">{label}</p>
+        <div className={cn("text-sm font-bold", textColor)}>
+          <CountUp
+            duration={0.5}
+            preserveValue
+            end={value}
+            decimals={0}
+            formattingFn={formatter.format}
+            className="text-sm"
+          />
+        </div>
+      </div>
     </div>
   );
 }
