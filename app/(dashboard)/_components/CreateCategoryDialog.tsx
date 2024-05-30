@@ -34,7 +34,7 @@ import {
 } from "@/schema/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleOff, Loader2, PlusSquare } from "lucide-react";
-import React, { useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import EmojiPicker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
@@ -47,10 +47,11 @@ import { useTheme } from "next-themes";
 interface Props {
   type: TransactionType;
   successCallback: (category: Category) => void;
+  trigger?: ReactNode;
 }
 
-function CreateCategoryDialog({ type, successCallback }: Props) {
-// hooks
+function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
+  // hooks
   const [open, setOpen] = useState(false);
   const queryClient = useQueryClient();
   const theme = useTheme();
@@ -62,7 +63,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
     },
     reValidateMode: "onChange",
   });
-  
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["create-category"],
     mutationFn: CreateCategory,
@@ -104,13 +105,17 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex-center-start border-separate rounded-none border-b px-3 py-3 text-muted-foreground"
-        >
-          <PlusSquare className="mr-2 size-4" />
-          Create New
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button
+            variant="ghost"
+            className="flex-center-start border-separate rounded-none border-b px-3 py-3 text-muted-foreground"
+          >
+            <PlusSquare className="mr-2 size-4" />
+            Create New
+          </Button>
+        )}
       </DialogTrigger>
 
       <DialogContent>
@@ -142,10 +147,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Category"
-                      {...field}
-                    />
+                    <Input placeholder="Category" {...field} />
                   </FormControl>
                   <FormDescription>
                     This is how your category will appear in the app
