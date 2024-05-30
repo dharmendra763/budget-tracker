@@ -104,6 +104,7 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
+      
       <DialogTrigger asChild>
         {trigger ? (
           trigger
