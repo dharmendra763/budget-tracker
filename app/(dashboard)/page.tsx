@@ -30,6 +30,7 @@ async function page() {
 
           <div className="flex-center gap-3">
             <CreateTransactionDialog
+              type="income"
               trigger={
                 <Button
                   variant="outline"
@@ -38,10 +39,10 @@ async function page() {
                   New Income
                 </Button>
               }
-              type="income"
-            ></CreateTransactionDialog>
+            />
 
             <CreateTransactionDialog
+              type="expense"
               trigger={
                 <Button
                   variant="outline"
@@ -50,14 +51,12 @@ async function page() {
                   New Expense
                 </Button>
               }
-              type="expense"
-            ></CreateTransactionDialog>
+            />
           </div>
         </div>
       </div>
 
       <Overview userSettings={userSettings} />
-
       <History userSettings={userSettings} />
     </div>
   );

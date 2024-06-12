@@ -197,7 +197,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                           mode="single"
                           selected={field.value}
                           onSelect={(value) => {
-                            if (value) field.onChange();
+                            if (value) field.onChange(value);
                           }}
                           initialFocus
                         />

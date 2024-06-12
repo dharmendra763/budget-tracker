@@ -55,7 +55,7 @@ export default function History({
 
   return (
     <div className="container">
-      <h2 className="mt-12 text-3xl font-bold">History</h2>
+      <h2 className="mt-12 mb-2 text-3xl font-bold">History</h2>
 
       <Card>
         <CardHeader className="gap-2">
